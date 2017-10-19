@@ -20,3 +20,5 @@ jar {
        attributes 'Main-Class': 'com.bahmanm.datedreamer.Main'
    }
 }
+
+version = '1.0.0-SNAPSHOT'
