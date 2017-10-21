@@ -110,14 +110,15 @@ class DateDreamer {
     if (conf.mode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
       print('Setting up the plot viewer...')
       showPlot(plot)
+      println()
     }
   }
 
-  static void generate() {
+  static void generate(Config conf) {
     def date = new Date()
     new DateDreamer(date.year-100, date.month+1, date.date)
       .doGenerate(
-        new Config(mode: Config.OutputMode.FILE, filePath: '/home/bahman/Temp/t.png')
+	conf
       )
   }
 
