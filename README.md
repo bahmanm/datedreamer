@@ -39,13 +39,15 @@ In math terms, given
 
 ![Definition of Y, M and D](https://i.imgur.com/P4KlG5d.gif)
 
+![Definition of C1 and C2](https://i.imgur.com/GiOxOwm.gif)
+
 and
 
-![Definition of f(i)](https://i.imgur.com/8s4T2c2.gif)
+![Definition of f(i)](https://i.imgur.com/vtZoTQe.gif)
 
 the points are generated using
 
-![Definition of g(n)](https://i.imgur.com/iccoHMx.gif)
+![Definition of g(n)](https://i.imgur.com/gXWf8L3.gif)
 
 and then rendered as a line plot.
 

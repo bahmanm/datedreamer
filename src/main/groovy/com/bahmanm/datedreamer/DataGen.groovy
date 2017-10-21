@@ -44,20 +44,23 @@ class DataGen {
   }
   
   int y, m, d
+  double c1, c2
   int nPoints, leap
   
   private DataGen(int y, int m, int d, int nPoints, int leap) {
     this.y = y ** 0.63
     this.m = (d+m) ** 1.1
     this.d = (d+y) ** 1.16
+    this.c1 = (this.y + this.m) * PI
+    this.c2 = 6.1
     this.nPoints = nPoints
     this.leap = leap
   }
 
   private Complex f(double n) {
-    double tmp = ((n / m) + ((n ** 2) / y) + ((n ** 3) / d)) / 4.1
+    double tmp = ((n / m) + ((n ** 2) / y) + ((n ** 3) / d)) / c2
     CJ
-      .multiply(2 * PI * tmp)
+      .multiply(c1 * tmp)
       .exp()
   }
 
@@ -82,7 +85,7 @@ class DataGen {
   }
 
   static Result generate(int y, int m, int d, int nPoints, int leap) {
-    new DataGen(y, m, d, nPoints, leap).doGenerate()
+    new DataGen(17, 11, 1, nPoints, leap).doGenerate()
   }
   
 }
