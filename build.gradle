@@ -24,6 +24,12 @@ jar {
     attributes 'Main-Class': 'com.bahmanm.datedreamer.Main'
   }
 }
+run {
+  if (project.hasProperty("appargs")) {
+    args appargs.split(' ')
+  }
+}
 
 version = '0.5.0-SNAPSHOT'
 mainClassName = 'com.bahmanm.datedreamer.Main'
+
