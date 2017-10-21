@@ -43,7 +43,7 @@ class DataGen {
     }
   }
   
-  int yy, mm, dd
+  int y, m, d
   int nPoints, leap
   
   private DataGen(int y, int m, int d, int nPoints, int leap) {
@@ -81,8 +81,13 @@ class DataGen {
     result
   }
 
-  static Result generate(int y, int m, int d, int nPoints, in leap) {
+  static Result generate(int y, int m, int d, int nPoints, int leap) {
     new DataGen(y, m, d, nPoints, leap).doGenerate()
   }
   
 }
+
+
+
+
+
