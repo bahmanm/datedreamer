@@ -36,11 +36,17 @@ Options
 Internally, the current date (or in future releases, the date you pass to it) is used to build a function. This function is then called N times, generating N data points. The list of data points is then converted to the list of partial sums of data points. And finally rendered to an image.
 
 In math terms, given
+
 ![Definition of Y, M and D](https://i.imgur.com/P4KlG5d.gif)
+
 and
+
 ![Definition of f(i)](https://i.imgur.com/8s4T2c2.gif)
+
 the points are generated using
+
 ![Definition of g(n)](https://i.imgur.com/iccoHMx.gif)
+
 and then rendered as a line plot.
 
 
