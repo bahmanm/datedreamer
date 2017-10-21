@@ -70,17 +70,17 @@ class DateDreamer {
 
   private void showPlot(Plot2DPanel plot) {
     new JFrame(TITLE).with {
-      setSize(abs(plotDims()[0]), abs(plotDims()[1]))
+      setSize(plotDims[0], plotDims[1])
       contentPane = plot
       visible = true
       defaultCloseOperation = EXIT_ON_CLOSE
     }
   }
 
-  private int[] plotDims() {
+  private int[] getPlotDims() {
     int width = (maxx - minx) * 10
     int height = ((maxy - miny) / (maxx - minx)) * width + 100
-    [width, height]
+    [abs(width), abs(height)]
   }
 
   private void doGenerate(Config conf) {
