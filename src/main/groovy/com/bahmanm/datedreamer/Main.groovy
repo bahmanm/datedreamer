@@ -11,8 +11,11 @@ class Main {
   static Map parseArgs(CliBuilder cli, String[] args) {
     def options = cli.parse(args)
     if (options)
-      [file: options.file ?: null, noUi: options.noUi,
-       nPoints: options.n as int, leap: options.initialLeap as int]
+      [file: options.file ?: null,
+       noUi: options.noUi ?: false,
+       nPoints: (options.n ?: 10_000) as int,
+       leap: (options.initialLeap ?: 3) as int,
+       help: options.help]
     else
       null
   }
@@ -43,6 +46,11 @@ class Main {
       'the integer to start the plot with, e.g. with n=100 and l=50, the plot starts ' +
 	'at 50 and ends at 150 (as the input).'
     )
+    cli.h(
+      args: 0,
+      longOpt: 'help',
+      'prints this message'
+    )
     cli
   }
 
@@ -55,13 +63,15 @@ class Main {
     else
       conf.mode = Config.OutputMode.FILE
     conf.filePath = opts.file
-    conf.nPoints = opts.nPoints ?: 20_000
-    conf.leap = opts.initialLeap ?: 3
+    conf.nPoints = opts.nPoints
+    conf.leap = opts.leap
     conf
   }
 
   static boolean validOptions(Map opts) {
-    if (opts.file == null && opts.noUi == true)
+    if (opts.help == true)
+      return false
+    else if (opts.file == null && opts.noUi == true)
       false
     else
       true
