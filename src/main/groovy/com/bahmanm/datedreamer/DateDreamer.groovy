@@ -48,7 +48,7 @@ class DateDreamer {
     }
   }
 
-  private void showPlot() {
+  private Plot2DPanel prepPlot() {
     double[] mins = [minx-3.0, miny-3.0]
     double[] maxs = [maxx+3.0, maxy+3.0]
     Plot2DPanel plot = new Plot2DPanel(
@@ -56,14 +56,24 @@ class DateDreamer {
       ['LIN', 'LIN'] as String[],
       ['LIN', 'LIN'] as String[]
     )
-    plot.addLinePlot(TITLE, new Color(108, 0, 143), xs, ys)
-    plot.setFixedBounds(mins, maxs)
-    plot.removeLegend()
-    new JFrame(TITLE).with { f ->
-      f.setSize(abs(plotDims()[0]), abs(plotDims()[1]))
-      f.contentPane = plot
-      f.visible = true
-      f.defaultCloseOperation = f.EXIT_ON_CLOSE
+    plot.with {
+      addLinePlot(TITLE, new Color(108, 0, 143), xs, ys)
+      setFixedBounds(mins, maxs)
+      removeLegend()
+    }
+    plot
+  }
+
+  private void writePlotToFile(Plot2DPanel plot, String filePath) {
+    //
+  }
+
+  private void showPlot(Plot2DPanel plot) {
+    new JFrame(TITLE).with {
+      setSize(abs(plotDims()[0]), abs(plotDims()[1]))
+      contentPane = plot
+      visible = true
+      defaultCloseOperation = EXIT_ON_CLOSE
     }
   }
 
@@ -73,14 +83,38 @@ class DateDreamer {
     [width, height]
   }
 
-  private void doGenerate() {
+  private void doGenerate(Config conf) {
+    print('Generating plot data. This may take a few seconds...')
     compAll()
-    showPlot()
+    println('done')
+    def plot = prepPlot()
+    if (conf.mode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
+      print('Writing the plot to file...')
+      writePlotToFile(plot, config.filePath)
+      println('done.')
+    }
+    if (conf.mode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
+      print('Setting up the plot viewer...')
+      showPlot(plot)
+    }
   }
 
   static void generate() {
     def date = new Date()
-    new DateDreamer(date.year-100, date.month+1, date.date).doGenerate()
+    new DateDreamer(date.year-100, date.month+1, date.date).doGenerate(
+      new Config(mode: Config.OutputMode.UI)
+    )
   }
 
+}
+
+class Config {
+
+  static enum OutputMode {
+    FILE, UI, BOTH
+  }
+
+  OutputMode mode
+  String filePath
+  
 }
