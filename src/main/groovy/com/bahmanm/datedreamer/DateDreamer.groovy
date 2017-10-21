@@ -102,7 +102,9 @@ class Config {
     FILE, UI, BOTH
   }
 
-  OutputMode mode
+  OutputMode mode = UI
   String filePath
+  int nPoints = 20_000
+  int leap = 3
   
 }
