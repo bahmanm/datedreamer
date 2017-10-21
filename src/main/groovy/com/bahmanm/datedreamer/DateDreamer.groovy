@@ -1,67 +1,40 @@
 package com.bahmanm.datedreamer
 
 
-import static java.lang.Math.*
-import org.apache.commons.math3.complex.Complex
 import javax.swing.JFrame
 import java.awt.Color
 import javax.imageio.ImageIO
 import java.awt.image.BufferedImage
 import java.awt.Graphics2D
 import org.math.plot.*
+import static java.lang.Math.abs
 
 /**
  * Convert calendar dates to alien looking plots using partial sums.
- * I got the idea from John D. Cook.
  *
  * @author Bahman Movaqar <Bahman@BahmanM.com>
  */
 class DateDreamer {
 
-  final static Complex CJ = new Complex(0.0, 1.0)
-  final static int N = 20_000
-  final static int LEAP = 3
   final static String TITLE = 'Date Dreamer'
+  int y, m, d
+  DataGen.Result result
 
-  int yy, mm, dd
-  double[] xs = new double[N]
-  double[] ys = new double[N]
-  double maxx, maxy, minx, miny
-
-  private DateDreamer(int y, int m, int d) {
-    yy = y ** 0.63
-    mm = (d+m) ** 1.1
-    dd = (d+y) ** 1.16
-  }
-
-  private Complex compOne(double n) {
-    double tmp = ((n / mm) + ((n ** 2) / yy) + ((n ** 3) / dd)) / 4.1
-    CJ
-      .multiply(2 * PI * tmp)
-      .exp()
-  }
-
-  private void compAll() {
-    Complex sum = Complex.ZERO
-    for (int i=LEAP; i<N+LEAP; i++) {
-      sum = sum.add(compOne(i))
-      xs[i-LEAP] = sum.real; ys[i-LEAP] = sum.imaginary
-      maxx = max(sum.real, maxx); maxy = max(sum.imaginary, maxy)
-      minx = min(sum.real, minx); miny = min(sum.imaginary, miny)
-    }
+  DateDreamer(int y, int m, int d) {
+    this.y = y; this.m = m; this.d = d
   }
 
   private Plot2DPanel prepPlot() {
-    double[] mins = [minx-3.0, miny-3.0]
-    double[] maxs = [maxx+3.0, maxy+3.0]
+    double[] mins = [result.minx-3.0, result.miny-3.0]
+    double[] maxs = [result.maxx+3.0, result.maxy+3.0]
     Plot2DPanel plot = new Plot2DPanel(
       mins, maxs,
       ['LIN', 'LIN'] as String[],
       ['LIN', 'LIN'] as String[]
     )
     plot.with {
-      addLinePlot(TITLE, new Color(108, 0, 143), xs, ys)
-      setFixedBounds(mins, maxs)
+      addLinePlot(TITLE, new Color(108, 0, 143), result.xs, result.ys)
+      setFixedBounds(result.mins, result.maxs)
       removeLegend()
     }
     plot
@@ -92,14 +65,15 @@ class DateDreamer {
   }
 
   private int[] getPlotDims() {
-    int width = (maxx - minx) * 10
-    int height = ((maxy - miny) / (maxx - minx)) * width + 100
+    int width = (result.maxx - result.minx) * 10
+    int height = ((result.maxy - result.miny) /
+		  (result.maxx - result.minx)) * width + 100
     [abs(width), abs(height)]
   }
 
   private void doGenerate(Config conf) {
     print('Generating plot data. This may take a few seconds...')
-    compAll()
+    result = DataGen.generate(y, m, d)
     println('done')
     def plot = prepPlot()
     if (conf.mode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
@@ -117,9 +91,7 @@ class DateDreamer {
   static void generate(Config conf) {
     def date = new Date()
     new DateDreamer(date.year-100, date.month+1, date.date)
-      .doGenerate(
-	conf
-      )
+      .doGenerate(conf)
   }
 
 }
