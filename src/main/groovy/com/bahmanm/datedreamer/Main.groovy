@@ -1,12 +1,18 @@
 package com.bahmanm.datedreamer
 
 
+/**
+ * DateDreamer launcher.
+ * 
+ * @author Bahman Movaqar <Bahman@BahmanM.com>
+ */
 class Main {
 
   static Map parseArgs(CliBuilder cli, String[] args) {
     def options = cli.parse(args)
     if (options)
-      [file: options.file ?: null, noUi: options.noUi]
+      [file: options.file ?: null, noUi: options.noUi,
+       nPoints: options.n as int, leap: options.initialLeap as int]
     else
       null
   }
@@ -24,7 +30,18 @@ class Main {
     cli._(
       longOpt: 'noUi',
       "don't show a plot viewer, e.g. in case you just need to save the plot to file. " +
-      "If used, you must pass the `--file` argument."
+	"If used, you must pass the `--file` argument."
+    )
+    cli.n(
+      args: 1,
+      longOpt: 'nPoints',
+      'how many data points to use in the plot --an integer'
+    )
+    cli.l(
+      args: 1,
+      longOpt: 'initialLeap',
+      'the integer to start the plot with, e.g. with n=100 and l=50, the plot starts ' +
+	'at 50 and ends at 150 (as the input).'
     )
     cli
   }
@@ -38,6 +55,8 @@ class Main {
     else
       conf.mode = Config.OutputMode.FILE
     conf.filePath = opts.file
+    conf.nPoints = opts.nPoints ?: 20_000
+    conf.leap = opts.initialLeap ?: 3
     conf
   }
 

@@ -73,7 +73,7 @@ class DateDreamer {
 
   private void doGenerate(Config conf) {
     print('Generating plot data. This may take a few seconds...')
-    result = DataGen.generate(y, m, d)
+    result = DataGen.generate(y, m, d, conf.nPoints, conf.leap)
     println('done')
     def plot = prepPlot()
     if (conf.mode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
@@ -102,9 +102,9 @@ class Config {
     FILE, UI, BOTH
   }
 
-  OutputMode mode = UI
+  OutputMode mode
   String filePath
-  int nPoints = 20_000
-  int leap = 3
+  int nPoints
+  int leap
   
 }
