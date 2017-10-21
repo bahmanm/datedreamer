@@ -10,6 +10,8 @@ import org.apache.commons.math3.complex.Complex
  */
 class DataGen {
 
+  final static Complex CJ = new Complex(0.0, 1.0)
+
   /**
    * Holds the result of the data generation.
    *
@@ -41,32 +43,32 @@ class DataGen {
     }
   }
   
-  final static Complex CJ = new Complex(0.0, 1.0)
-  final static int N = 20_000
-  final static int LEAP = 3
-
   int yy, mm, dd
-  private DataGen(int y, int m, int d) {
-    yy = y ** 0.63
-    mm = (d+m) ** 1.1
-    dd = (d+y) ** 1.16
+  int nPoints, leap
+  
+  private DataGen(int y, int m, int d, int nPoints, int leap) {
+    this.y = y ** 0.63
+    this.m = (d+m) ** 1.1
+    this.d = (d+y) ** 1.16
+    this.nPoints = nPoints
+    this.leap = leap
   }
 
   private Complex f(double n) {
-    double tmp = ((n / mm) + ((n ** 2) / yy) + ((n ** 3) / dd)) / 4.1
+    double tmp = ((n / m) + ((n ** 2) / y) + ((n ** 3) / d)) / 4.1
     CJ
       .multiply(2 * PI * tmp)
       .exp()
   }
 
   private Result doGenerate() {
-    Result result = new Result(N)
+    Result result = new Result(nPoints)
     Complex sum = Complex.ZERO
     double maxx, maxy, minx, miny
-    for (int i=LEAP; i<N+LEAP; i++) {
+    for (int i=leap; i<nPoints+leap; i++) {
       sum = sum.add(f(i))
-      result.xs[i-LEAP] = sum.real
-      result.ys[i-LEAP] = sum.imaginary
+      result.xs[i-leap] = sum.real
+      result.ys[i-leap] = sum.imaginary
       maxx = max(sum.real, maxx)
       minx = min(sum.real, minx)
       maxy = max(sum.imaginary, maxy)
@@ -79,8 +81,8 @@ class DataGen {
     result
   }
 
-  static Result generate(int y, int m, int d) {
-    new DataGen(y, m, d).doGenerate()
+  static Result generate(int y, int m, int d, int nPoints, in leap) {
+    new DataGen(y, m, d, nPoints, leap).doGenerate()
   }
   
 }
