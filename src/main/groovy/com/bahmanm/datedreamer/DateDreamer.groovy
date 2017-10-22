@@ -25,9 +25,9 @@ class DateDreamer {
     this.y = y; this.m = m; this.d = d; this.config = config
   }
 
-  int getnPoints() {
+  int nPoints() {
     if (config.framesConfig.enabled)
-      return config.framesConfig.frames.reduce(0) { acc, f ->
+      return config.framesConfig.frames.inject(0) { acc, f ->
 	acc + (f.nPoints * f.nRepeat)
       }
     else return config.nPoints
@@ -35,8 +35,33 @@ class DateDreamer {
 
   private void writePlots() {
     Plotter plotter = new Plotter(result, config.width)
-    if (config.framesConfig.enabled == false) {
+    if (config.framesConfig.enabled == true) {
+      int sliceStart = 0
+      int sliceEnd = 0
+      def frames = config
+	.framesConfig
+	.frames
+	.inject([]) { acc, f ->
+	  f.nRepeat.times { 
+	    sliceEnd += f.nPoints
+	    acc << [sliceStart, sliceEnd-1]
+	  }
+	  acc
+      }
+      frames.eachWithIndex { f, i ->
+	print("Writing plot frame $i...")
+	plotter.writePlotToFile(
+	  f[0], f[1],
+	  config.framesConfig.directory +
+	    File.separator +
+	    config.framesConfig.prefix + "${i}.png"
+	)
+	println('done.')
+      }
+    } else {
+      print('Writing the plot to file...')
       plotter.writePlotToFile(0, result.xs.length-1, config.filePath)
+      println('done.')
     }
   }
 
@@ -47,10 +72,10 @@ class DateDreamer {
   
   private void doGenerate() {
     print('Generating plot data. This may take a few seconds...')
-    result = DataGen.generate(y, m, d, nPoints, config.leap)
+    result = DataGen.generate(y, m, d, nPoints(), config.leap)
     println('done')
     if (config.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
-      print('Writing the plot to file...')
+
       writePlots()
       println('done.')
     }
