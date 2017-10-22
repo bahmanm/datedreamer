@@ -19,9 +19,10 @@ class DateDreamer {
   final static String TITLE = 'Date Dreamer'
   int y, m, d
   DataGen.Result result
+  Config config
 
-  DateDreamer(int y, int m, int d) {
-    this.y = y; this.m = m; this.d = d
+  DateDreamer(int y, int m, int d, Config config) {
+    this.y = y; this.m = m; this.d = d; this.config = config
   }
 
   private Plot2DPanel prepPlot() {
@@ -40,16 +41,15 @@ class DateDreamer {
     plot
   }
 
-  private void writePlotToFile(Plot2DPanel plot, String filePath) {
-    def dims = plotDims.collect { it * 4 }
-    def img = new BufferedImage(dims[0], dims[1], BufferedImage.TYPE_INT_RGB)
+  private void writePlotToFile(Plot2DPanel plot) {
+    def img = new BufferedImage(plotDims[0], plotDims[1], BufferedImage.TYPE_INT_RGB)
     plot.with {
-      setSize(dims[0], dims[1])
+      setSize(plotDims[0], plotDims[1])
       doLayout()
       paint(img.createGraphics())
     }
     try {
-      ImageIO.write(img, 'png', new File(filePath));
+      ImageIO.write(img, 'png', new File(config.filePath));
     } catch (Exception e) {
       println("\nERROR: Failed to write plot to file --${e.message}.")
     }
@@ -68,30 +68,30 @@ class DateDreamer {
     int width = (result.maxx - result.minx) * 10
     int height = ((result.maxy - result.miny) /
 		  (result.maxx - result.minx)) * width + 100
-    [abs(width), abs(height)]
+    [config.width, abs(height) * (config.width / width)]
   }
 
-  private void doGenerate(Config conf) {
+  private void doGenerate(Config config) {
     print('Generating plot data. This may take a few seconds...')
-    result = DataGen.generate(y, m, d, conf.nPoints, conf.leap)
+    result = DataGen.generate(y, m, d, config)
     println('done')
     def plot = prepPlot()
-    if (conf.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
+    if (config.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
       print('Writing the plot to file...')
-      writePlotToFile(plot, conf.filePath)
+      writePlotToFile(plot)
       println('done.')
     }
-    if (conf.outputMode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
+    if (config.outputMode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
       print('Setting up the plot viewer...')
       showPlot(plot)
       println()
     }
   }
 
-  static void generate(Config conf) {
+  static void generate(Config config) {
     def date = new Date()
-    new DateDreamer(date.year-100, date.month+1, date.date)
-      .doGenerate(conf)
+    new DateDreamer(date.year-100, date.month+1, date.date, config)
+      .doGenerate(config)
   }
 
 }
