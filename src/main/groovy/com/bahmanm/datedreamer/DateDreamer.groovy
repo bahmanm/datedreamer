@@ -17,7 +17,6 @@ import com.bahmanm.datedreamer.config.Config
  */
 class DateDreamer {
 
-  final static String TITLE = 'Date Dreamer'
   int y, m, d
   DataGen.Result result
   Config config
@@ -26,73 +25,46 @@ class DateDreamer {
     this.y = y; this.m = m; this.d = d; this.config = config
   }
 
-  private Plot2DPanel prepPlot() {
-    double[] mins = [result.minx-3.0, result.miny-3.0]
-    double[] maxs = [result.maxx+3.0, result.maxy+3.0]
-    Plot2DPanel plot = new Plot2DPanel(
-      mins, maxs,
-      ['LIN', 'LIN'] as String[],
-      ['LIN', 'LIN'] as String[]
-    )
-    plot.with {
-      addLinePlot(TITLE, new Color(108, 0, 143), result.xs, result.ys)
-      setFixedBounds(result.mins, result.maxs)
-      removeLegend()
-    }
-    plot
+  int getnPoints() {
+    if (config.framesConfig.enabled)
+      return config.framesConfig.frames.reduce(0) { acc, f ->
+	acc + (f.nPoints * f.nRepeat)
+      }
+    else return config.nPoints
   }
 
-  private void writePlotToFile(Plot2DPanel plot) {
-    def img = new BufferedImage(plotDims[0], plotDims[1], BufferedImage.TYPE_INT_RGB)
-    plot.with {
-      setSize(plotDims[0], plotDims[1])
-      doLayout()
-      paint(img.createGraphics())
-    }
-    try {
-      ImageIO.write(img, 'png', new File(config.filePath));
-    } catch (Exception e) {
-      println("\nERROR: Failed to write plot to file --${e.message}.")
+  private void writePlots() {
+    Plotter plotter = new Plotter(result, config.width)
+    if (config.framesConfig.enabled == false) {
+      plotter.writePlotToFile(0, result.xs.length-1, config.filePath)
     }
   }
 
-  private void showPlot(Plot2DPanel plot) {
-    new JFrame(TITLE).with {
-      setSize(plotDims[0], plotDims[1])
-      contentPane = plot
-      visible = true
-      defaultCloseOperation = EXIT_ON_CLOSE
-    }
+  private void showPlot() {
+    Plotter plotter = new Plotter(result, config.width)  
+    plotter.showPlot(0, result.xs.length-1)
   }
-
-  private int[] getPlotDims() {
-    int width = (result.maxx - result.minx) * 10
-    int height = ((result.maxy - result.miny) /
-		  (result.maxx - result.minx)) * width + 100
-    [config.width, abs(height) * (config.width / width)]
-  }
-
-  private void doGenerate(Config config) {
+  
+  private void doGenerate() {
     print('Generating plot data. This may take a few seconds...')
-    result = DataGen.generate(y, m, d, config.nPoints, config.leap)
+    result = DataGen.generate(y, m, d, nPoints, config.leap)
     println('done')
-    def plot = prepPlot()
     if (config.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
       print('Writing the plot to file...')
-      writePlotToFile(plot)
+      writePlots()
       println('done.')
     }
     if (config.outputMode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
       print('Setting up the plot viewer...')
-      showPlot(plot)
-      println()
+      showPlot()
+      println('')
     }
   }
 
   static void generate(Config config) {
     def date = new Date()
     new DateDreamer(date.year-100, date.month+1, date.date, config)
-      .doGenerate(config)
+      .doGenerate()
   }
 
 }
