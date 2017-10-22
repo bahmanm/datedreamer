@@ -22,6 +22,8 @@ class FramesConfig {
   boolean enabled
   String directory
   String prefix
+  boolean interimEnabled
+  int interimColor
   List<Frame> frames
 
   static fromMap(Map map) {
@@ -32,6 +34,8 @@ class FramesConfig {
     frames.frames = map.data?.collect { d ->
       new Frame(nPoints: d.nPoints, nRepeat: d.nRepeat)
     }
+    frames.interimEnabled = map.showInterim as boolean
+    frames.interimColor = map.interimColor
     frames
   }
 

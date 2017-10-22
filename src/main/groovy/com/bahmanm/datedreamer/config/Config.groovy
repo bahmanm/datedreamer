@@ -22,6 +22,8 @@ class Config {
   int leap
   int width
   FramesConfig framesConfig
+  int color
+
 
   private Config() {}
 
@@ -58,6 +60,7 @@ class Config {
       leap = yaml.leap as int
       width = yaml.width as int
       framesConfig = FramesConfig.fromMap(yaml.frames)
+      color = yaml.color
     }
     config
   }
