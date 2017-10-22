@@ -1,6 +1,8 @@
 package com.bahmanm.datedreamer
 
 
+import com.bahmanm.datedreamer.config.Config
+
 /**
  * DateDreamer launcher.
  * 

@@ -13,7 +13,7 @@ outputMode: ui
 
 # Where to write the image file?
 # In case `outputMode` is set to `file` or `both`, this is the path to the file.
-filePath: 'datedreamer.png'
+filePath: datedreamer.png
 
 # What is the width of the image in pixels?
 # Scales the width and height of the original image so that the width is
@@ -22,6 +22,34 @@ filePath: 'datedreamer.png'
 # the output dimensions will be 800x267.
 width: 900
 
+# Instructions for Date Dreamer to generate frames as the "dreaming" happens!
+# If enabled, after generating certain number of points Date Dreamer will write
+# the resulting (partial) plot to a file.
+frames:
+  # Is framed rendering enabled?
+  # If set to `no`, none of the other options will have any effect whatsoever.
+  # If set to `yes`, `filePath` and `nPoints` will have no effect.
+  enabled: no
+
+  # In which directory to place the frames?
+  # The directory should already exist and be accessible to Date Dreamer.
+  directory: .
+  
+  # What is the prefix of the partial image files?
+  # Date Dreamer will write image files with a simple naming convention:
+  # `prefix+i`. For instance: `frame-0.png`, `frame-1.png`, ...
+  prefix: 'frame-'
+
+  # Data to generate the frames. Each set contains the number of points in each
+  # frame and the number of frames.
+  data:
+    - nPoints: 100
+      nRepeat: 15
+    - nPoints: 500
+      nRepeat: 13
+    - nPoints: 1000
+      nRepeat: 13
+    
 # What is the initial seed to f(i)?
 # Probably you don't need to change this. That said, take a look at the README 
 # for a better understanding.

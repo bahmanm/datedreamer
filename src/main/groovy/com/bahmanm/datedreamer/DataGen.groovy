@@ -4,6 +4,7 @@ package com.bahmanm.datedreamer
 import static org.apache.commons.math3.util.FastMath.*
 import org.apache.commons.math3.complex.Complex
 import groovy.transform.CompileStatic
+import com.bahmanm.datedreamer.config.Config
 
 /**
  * Generates the data points 

@@ -1,4 +1,4 @@
-package com.bahmanm.datedreamer
+package com.bahmanm.datedreamer.config
 
 
 import org.yaml.snakeyaml.Yaml
@@ -10,7 +10,7 @@ import org.yaml.snakeyaml.Yaml
  */
 class Config {
 
-  enum OutputMode {
+  static enum OutputMode {
     FILE, UI, BOTH
   }
 
@@ -21,6 +21,7 @@ class Config {
   int nPoints
   int leap
   int width
+  FramesConfig framesConfig
 
   private Config() {}
 
@@ -56,6 +57,7 @@ class Config {
       nPoints = yaml.nPoints as int
       leap = yaml.leap as int
       width = yaml.width as int
+      framesConfig = FramesConfig.fromMap(yaml.frames)
     }
     config
   }
@@ -70,7 +72,7 @@ class Config {
     if (config.nPoints < 10) return '`nPoints` cannot be less than 10'
     if (config.leap < 0) return '`leap` cannot be less than 0'
     if (config.width < 100) return '`width` cannot be less than 100'
-    return null
+    return FramesConfig.validate(config.framesConfig)
   }
   
 }

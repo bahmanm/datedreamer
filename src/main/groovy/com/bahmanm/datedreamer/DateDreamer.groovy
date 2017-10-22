@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage
 import java.awt.Graphics2D
 import org.math.plot.*
 import static java.lang.Math.abs
+import com.bahmanm.datedreamer.config.Config
 
 /**
  * Convert calendar dates to alien looking plots using partial sums.
