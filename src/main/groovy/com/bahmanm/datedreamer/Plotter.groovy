@@ -28,9 +28,7 @@ class Plotter {
     this.height = getPlotHeight(data, width)
   }
 
-  void writePlotToFile(
-    DataGen.Result data, int sliceStart, int sliceEnd, String filePath
-  ) {
+  void writePlotToFile(int sliceStart, int sliceEnd, String filePath) {
     def plot = prepPlot(sliceStart, sliceEnd)
     def img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     plot.with {
@@ -45,9 +43,7 @@ class Plotter {
     }
   }
 
-  void showPlot(
-    DataGen.Result data, int sliceStart, int sliceEnd
-  ) {
+  void showPlot(int sliceStart, int sliceEnd) {
     def plot = prepPlot(sliceStart, sliceEnd)
     new JFrame(TITLE).with {
       setSize(width, height)
@@ -79,9 +75,8 @@ class Plotter {
 
   static private int getPlotHeight(DataGen.Result data, int desiredWidth) {
     double actualWidth = (data.maxx - data.minx) * 10
-    double height = ((data.maxy - data.miny) /
-		     (data.maxx - data.minx)) * actualWidth + 100d
-    (abs(height) * (actualWidth / desiredWidth)).intValue() + 1
+    double height = (data.maxy - data.miny) * 10
+    (abs(height) * (desiredWidth / actualWidth)).intValue() + 1
   }
   
 }
