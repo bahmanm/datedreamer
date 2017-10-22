@@ -9,7 +9,7 @@ nPoints: 20000
 
 # Where to output the plot?
 # Can be 'file', 'ui' or 'both'.
-outputMode: both
+outputMode: ui
 
 # Where to write the image file?
 # In case `outputMode` is set to `file`, this is the path to the file.
