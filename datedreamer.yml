@@ -1,0 +1,22 @@
+##
+## Configuration options for Date Dreamer
+##
+
+# How many data points to generate?
+# Though a bigger value means better precision, it comes at the price of speed
+# and the size of the image. Usually 20000 is a good balance.
+nPoints: 20000
+
+# Where to output the plot?
+# Can be 'file', 'ui' or 'both'.
+outputMode: both
+
+# Where to write the image file?
+# In case `outputMode` is set to `file`, this is the path to the file.
+filePath: 'datedreamer.png'
+
+# What is the initial seed to f(i)?
+# Probably you don't need to change this. That said, take a look at the README 
+# for a better understanding.
+leap: 3
+
