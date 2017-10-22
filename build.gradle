@@ -31,6 +31,6 @@ run {
   }
 }
 
-version = '0.6.0-SNAPSHOT'
+version = '0.6.0'
 mainClassName = 'com.bahmanm.datedreamer.Main'
 
