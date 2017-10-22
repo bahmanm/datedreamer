@@ -2,7 +2,8 @@ package com.bahmanm.datedreamer.config
 
 
 /**
- *  
+ * Framed rendering configuration options.
+ * 
  * @author Bahman Movaqar <Bahman@BahmanM.com>
  */
 class FramesConfig {
