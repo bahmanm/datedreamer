@@ -12,8 +12,15 @@ nPoints: 20000
 outputMode: ui
 
 # Where to write the image file?
-# In case `outputMode` is set to `file`, this is the path to the file.
+# In case `outputMode` is set to `file` or `both`, this is the path to the file.
 filePath: 'datedreamer.png'
+
+# What is the width of the image in pixels?
+# Scales the width and height of the original image so that the width is
+# `width`. Only used if the `outputMode` is set to `file` or `both`.
+# For instance if the original image is 300x100 and `width` is set to 800,
+# the output dimensions will be 800x267.
+width: 800
 
 # What is the initial seed to f(i)?
 # Probably you don't need to change this. That said, take a look at the README 

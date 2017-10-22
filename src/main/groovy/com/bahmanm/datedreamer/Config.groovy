@@ -20,6 +20,7 @@ class Config {
   String filePath
   int nPoints
   int leap
+  int width
 
   private Config() {}
 
@@ -39,6 +40,10 @@ class Config {
     this.leap = leap
   }
 
+  private void setWidth(int width) {
+    this.width = width
+  }
+
   //////////////////////////////////////////////////////////////////////////////
   static Config fromYamlText(String text) {
     def yaml = new Yaml().load(text)
@@ -49,7 +54,8 @@ class Config {
       )
       filePath = yaml.filePath as String
       nPoints = yaml.nPoints as int
-      leap = yaml.leap as int      
+      leap = yaml.leap as int
+      width = yaml.width as int
     }
     config
   }
@@ -63,6 +69,7 @@ class Config {
       if (config.filePath == null) return '`filePath` cannot be empty'
     if (config.nPoints < 10) return '`nPoints` cannot be less than 10'
     if (config.leap < 0) return '`leap` cannot be less than 0'
+    if (config.width < 100) return '`width` cannot be less than 100'
     return null
   }
   
