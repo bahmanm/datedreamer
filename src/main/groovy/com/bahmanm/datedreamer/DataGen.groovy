@@ -4,7 +4,6 @@ package com.bahmanm.datedreamer
 import static org.apache.commons.math3.util.FastMath.*
 import org.apache.commons.math3.complex.Complex
 import groovy.transform.CompileStatic
-import com.bahmanm.datedreamer.config.Config
 
 /**
  * Generates the data points 
@@ -48,15 +47,16 @@ class DataGen {
   
   int y, m, d
   double c1, c2
-  Config config
+  int nPoints, leap
   
-  private DataGen(int y, int m, int d, Config config) {
+  private DataGen(int y, int m, int d, int nPoints, int leap) {
     this.y = pow(y, 0.63d) as int
     this.m = pow(d+m, 1.1d) as int
     this.d = pow(d+y, 1.16d) as int
     this.c1 = (this.y + this.m) * PI
     this.c2 = 6.1d
-    this.config = config
+    this.nPoints = nPoints
+    this.leap = leap
   }
 
   private Complex f(double n) {
@@ -67,13 +67,13 @@ class DataGen {
   }
 
   private Result doGenerate() {
-    Result result = new Result(config.nPoints)
+    Result result = new Result(nPoints)
     Complex sum = Complex.ZERO
     double maxx, maxy, minx, miny
-    for (int i=config.leap; i<config.nPoints+config.leap; i++) {
+    for (int i=leap; i<nPoints+leap; i++) {
       sum = sum.add(f(i))
-      result.xs[i-config.leap] = sum.real
-      result.ys[i-config.leap] = sum.imaginary
+      result.xs[i-leap] = sum.real
+      result.ys[i-leap] = sum.imaginary
       maxx = max(sum.real, maxx)
       minx = min(sum.real, minx)
       maxy = max(sum.imaginary, maxy)
@@ -86,8 +86,8 @@ class DataGen {
     result
   }
 
-  static Result generate(int y, int m, int d, Config config) {
-    new DataGen(y, m, d, config).doGenerate()
+  static Result generate(int y, int m, int d, int nPoints, int leap) {
+    new DataGen(y, m, d, nPoints, leap).doGenerate()
   }
   
 }

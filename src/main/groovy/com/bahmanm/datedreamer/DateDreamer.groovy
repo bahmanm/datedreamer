@@ -74,7 +74,7 @@ class DateDreamer {
 
   private void doGenerate(Config config) {
     print('Generating plot data. This may take a few seconds...')
-    result = DataGen.generate(y, m, d, config)
+    result = DataGen.generate(y, m, d, config.nPoints, config.leap)
     println('done')
     def plot = prepPlot()
     if (config.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
