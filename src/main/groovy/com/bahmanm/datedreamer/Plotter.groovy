@@ -29,7 +29,7 @@ class Plotter {
   }
 
   void writePlotToFile(
-    int sliceStart, int sliceEnd, int color, String filePath
+    int sliceStart, int sliceEnd, String filePath, int color
   ) {
     def plot = prepPlot(sliceStart, sliceEnd, color)
     def img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)

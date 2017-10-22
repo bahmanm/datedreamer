@@ -20,6 +20,7 @@ class DateDreamer {
   int y, m, d
   DataGen.Result result
   Config config
+  Plotter plotter
 
   DateDreamer(int y, int m, int d, Config config) {
     this.y = y; this.m = m; this.d = d; this.config = config
@@ -33,31 +34,39 @@ class DateDreamer {
     else return config.nPoints
   }
 
-  private void writePlots() {
-    Plotter plotter = new Plotter(result, config.width)
-    if (config.framesConfig.enabled == true) {
-      int sliceStart = 0
-      int sliceEnd = 0
-      def frames = config
-	.framesConfig
-	.frames
-	.inject([]) { acc, f ->
-	  f.nRepeat.times { 
-	    sliceEnd += f.nPoints
-	    acc << [sliceStart, sliceEnd-1]
-	  }
-	  acc
+  private List<List<Integer>> frameBoundaries() {
+    int sliceStart = 0
+    int sliceEnd = 0
+    config
+      .framesConfig
+      .frames
+      .inject([]) { acc, f ->
+        f.nRepeat.times { 
+	  sliceEnd += f.nPoints
+	  acc << [sliceStart, sliceEnd-1]
+        }
+        acc
       }
+  }
+
+  private void writeFrame(int n, List<Integer> boundaries) {
+    print("Writing plot frame $n...")
+    plotter.writePlotToFile(
+      boundaries[0], boundaries[1],
+      config.framesConfig.directory +
+	File.separator +
+	config.framesConfig.prefix + "${n}.png",
+      config.color
+    )
+    println('done.')    
+  }
+  
+  private void writePlot() {
+    plotter = new Plotter(result, config.width)
+    if (config.framesConfig.enabled == true) {
+      def frames = frameBoundaries()
       frames.eachWithIndex { f, i ->
-	print("Writing plot frame $i...")
-	plotter.writePlotToFile(
-	  f[0], f[1],
-	  config.framesConfig.directory +
-	    File.separator +
-	    config.framesConfig.prefix + "${i}.png",
-	  config.color
-	)
-	println('done.')
+	writeFrame(i, f)
       }
     } else {
       print('Writing the plot to file...')
@@ -69,7 +78,7 @@ class DateDreamer {
   }
 
   private void showPlot() {
-    Plotter plotter = new Plotter(result, config.width)  
+    plotter = new Plotter(result, config.width)  
     plotter.showPlot(0, result.xs.length-1, config.color)
   }
   
@@ -78,8 +87,7 @@ class DateDreamer {
     result = DataGen.generate(y, m, d, nPoints(), config.leap)
     println('done')
     if (config.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
-
-      writePlots()
+      writePlot()
       println('done.')
     }
     if (config.outputMode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
