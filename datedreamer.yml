@@ -22,6 +22,10 @@ filePath: datedreamer.png
 # the output dimensions will be 800x267.
 width: 900
 
+# What is the line color of the plot?
+# In hex RGB format. Note `0x` at the beginning.
+color: 0x6c008f
+
 # Instructions for Date Dreamer to generate frames as the "dreaming" happens!
 # If enabled, after generating certain number of points Date Dreamer will write
 # the resulting (partial) plot to a file.
@@ -39,6 +43,17 @@ frames:
   # Date Dreamer will write image files with a simple naming convention:
   # `prefix+i`. For instance: `frame-0.png`, `frame-1.png`, ...
   prefix: 'frame-'
+
+  # Should Date Dreamer show interim frames?
+  # If you enable interim frames, then each frame will be represented as 2
+  # frames: 1 with the portion rendered using `interimColor` and the other
+  # one using `color`.
+  showInterim: no
+
+  # What is the line color of interim frames?
+  # Only takes effect if `showInterim` is enabled.
+  # Note `0x` at the beginning.
+  interimColor: 0xff075f
 
   # Data to generate the frames. Each set contains the number of points in each
   # frame and the number of frames.
