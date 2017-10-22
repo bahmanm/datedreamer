@@ -60,10 +60,10 @@ class Config {
 
   static String validate(Config config) {
     if (config.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH])
-      if (config.filePath == null) '`filePath` cannot be empty'
-    if (config.nPoints < 10) '`nPoints` cannot be less than 10'
-    if (config.leap < 0) '`leap` cannot be less than 0'
-    null
+      if (config.filePath == null) return '`filePath` cannot be empty'
+    if (config.nPoints < 10) return '`nPoints` cannot be less than 10'
+    if (config.leap < 0) return '`leap` cannot be less than 0'
+    return null
   }
   
 }
