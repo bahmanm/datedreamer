@@ -76,12 +76,12 @@ class DateDreamer {
     result = DataGen.generate(y, m, d, conf.nPoints, conf.leap)
     println('done')
     def plot = prepPlot()
-    if (conf.mode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
+    if (conf.outputMode in [Config.OutputMode.FILE, Config.OutputMode.BOTH]) {
       print('Writing the plot to file...')
       writePlotToFile(plot, conf.filePath)
       println('done.')
     }
-    if (conf.mode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
+    if (conf.outputMode in [Config.OutputMode.UI, Config.OutputMode.BOTH]) {
       print('Setting up the plot viewer...')
       showPlot(plot)
       println()
@@ -94,17 +94,4 @@ class DateDreamer {
       .doGenerate(conf)
   }
 
-}
-
-class Config {
-
-  static enum OutputMode {
-    FILE, UI, BOTH
-  }
-
-  OutputMode mode
-  String filePath
-  int nPoints
-  int leap
-  
 }

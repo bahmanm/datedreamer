@@ -3,11 +3,13 @@ package com.bahmanm.datedreamer
 
 import static org.apache.commons.math3.util.FastMath.*
 import org.apache.commons.math3.complex.Complex
+import groovy.transform.CompileStatic
 
 /**
  * Generates the data points 
  * @author Bahman Movaqar <Bahman@BahmanM.com>
  */
+@CompileStatic
 class DataGen {
 
   final static Complex CJ = new Complex(0.0, 1.0)
@@ -48,11 +50,11 @@ class DataGen {
   int nPoints, leap
   
   private DataGen(int y, int m, int d, int nPoints, int leap) {
-    this.y = pow(y, 0.63)
-    this.m = pow(d+m, 1.1)
-    this.d = pow(d+y, 1.16)
+    this.y = pow(y, 0.63d) as int
+    this.m = pow(d+m, 1.1d) as int
+    this.d = pow(d+y, 1.16d) as int
     this.c1 = (this.y + this.m) * PI
-    this.c2 = 6.1
+    this.c2 = 6.1d
     this.nPoints = nPoints
     this.leap = leap
   }
@@ -89,8 +91,3 @@ class DataGen {
   }
   
 }
-
-
-
-
-

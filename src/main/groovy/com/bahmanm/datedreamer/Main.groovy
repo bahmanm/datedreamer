@@ -57,9 +57,9 @@ class Main {
   static Config optionsToConfig(Map opts) {
     def conf = new Config()
     if (opts.file != null && opts.noUi == false)
-      conf.mode = Config.OutputMode.BOTH
+      conf.outputMode = Config.OutputMode.BOTH
     else if (opts.file == null)
-      conf.mode = Config.OutputMode.UI
+      conf.outputMode = Config.OutputMode.UI
     else
       conf.mode = Config.OutputMode.FILE
     conf.filePath = opts.file
