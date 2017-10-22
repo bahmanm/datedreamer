@@ -41,7 +41,8 @@ class DateDreamer {
       .framesConfig
       .frames
       .inject([]) { acc, f ->
-        f.nRepeat.times { 
+        f.nRepeat.times {
+	  sliceStart = sliceEnd
 	  sliceEnd += f.nPoints
 	  acc << [sliceStart, sliceEnd-1]
         }
@@ -51,11 +52,20 @@ class DateDreamer {
 
   private void writeFrame(int n, List<Integer> boundaries) {
     print("Writing plot frame $n...")
+    if (config.framesConfig.interimEnabled) {
+      plotter.writePlotToFile(
+	boundaries[0], boundaries[1],
+	config.framesConfig.directory +
+	  File.separator +
+	  config.framesConfig.prefix + "${n}-0.png",
+	config.framesConfig.interimColor
+      ) 
+    }
     plotter.writePlotToFile(
-      boundaries[0], boundaries[1],
+      0, boundaries[1],
       config.framesConfig.directory +
 	File.separator +
-	config.framesConfig.prefix + "${n}.png",
+	config.framesConfig.prefix + "${n}-1.png",
       config.color
     )
     println('done.')    

@@ -33,7 +33,7 @@ frames:
   # Is framed rendering enabled?
   # If set to `no`, none of the other options will have any effect whatsoever.
   # If set to `yes`, `filePath` and `nPoints` will have no effect.
-  enabled: no
+  enabled: yes
 
   # In which directory to place the frames?
   # The directory should already exist and be accessible to Date Dreamer.
