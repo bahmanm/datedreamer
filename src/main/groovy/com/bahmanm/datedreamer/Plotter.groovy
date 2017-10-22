@@ -28,8 +28,10 @@ class Plotter {
     this.height = getPlotHeight(data, width)
   }
 
-  void writePlotToFile(int sliceStart, int sliceEnd, String filePath) {
-    def plot = prepPlot(sliceStart, sliceEnd)
+  void writePlotToFile(
+    int sliceStart, int sliceEnd, int color, String filePath
+  ) {
+    def plot = prepPlot(sliceStart, sliceEnd, color)
     def img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     plot.with {
       setSize(width, height)
@@ -43,8 +45,8 @@ class Plotter {
     }
   }
 
-  void showPlot(int sliceStart, int sliceEnd) {
-    def plot = prepPlot(sliceStart, sliceEnd)
+  void showPlot(int sliceStart, int sliceEnd, int color) {
+    def plot = prepPlot(sliceStart, sliceEnd, color)
     new JFrame(TITLE).with {
       setSize(width, height)
       contentPane = plot
@@ -53,7 +55,7 @@ class Plotter {
     }
   }
 
-  private Plot2DPanel prepPlot(int sliceStart, int sliceEnd) {
+  private Plot2DPanel prepPlot(int sliceStart, int sliceEnd, int color) {
     double[] mins = [data.minx-3.0, data.miny-3.0] as double[]
     double[] maxs = [data.maxx+3.0, data.maxy+3.0] as double[]
     Plot2DPanel plot = new Plot2DPanel(
@@ -63,7 +65,7 @@ class Plotter {
     )
     plot.with {
       addLinePlot(
-	TITLE, new Color(108, 0, 143),
+	TITLE, new Color(color),
 	data.xs[sliceStart..sliceEnd] as double[],
 	data.ys[sliceStart..sliceEnd] as double[]
       )

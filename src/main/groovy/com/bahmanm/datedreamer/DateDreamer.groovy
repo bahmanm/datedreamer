@@ -54,20 +54,23 @@ class DateDreamer {
 	  f[0], f[1],
 	  config.framesConfig.directory +
 	    File.separator +
-	    config.framesConfig.prefix + "${i}.png"
+	    config.framesConfig.prefix + "${i}.png",
+	  config.color
 	)
 	println('done.')
       }
     } else {
       print('Writing the plot to file...')
-      plotter.writePlotToFile(0, result.xs.length-1, config.filePath)
+      plotter.writePlotToFile(
+	0, result.xs.length-1, config.filePath, config.color
+      )
       println('done.')
     }
   }
 
   private void showPlot() {
     Plotter plotter = new Plotter(result, config.width)  
-    plotter.showPlot(0, result.xs.length-1)
+    plotter.showPlot(0, result.xs.length-1, config.color)
   }
   
   private void doGenerate() {
