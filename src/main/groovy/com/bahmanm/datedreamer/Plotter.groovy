@@ -35,7 +35,9 @@ class Plotter {
     def img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
     plot.with {
       setSize(width, height)
+      validate()
       doLayout()
+      Thread.sleep(1000)
       paint(img.createGraphics())
     }
     try {
