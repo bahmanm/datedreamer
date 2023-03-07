@@ -6,13 +6,13 @@ import org.apache.commons.math3.complex.Complex
 import groovy.transform.CompileStatic
 
 /**
- * Generates the data points 
+ * Generates the data points
  * @author Bahman Movaqar <Bahman@BahmanM.com>
  */
 @CompileStatic
 class DataGen {
 
-  final static Complex CJ = new Complex(0.0, 1.0)
+  final static Complex CJ = new Complex(0.0d, 1.0d)
 
   /**
    * Holds the result of the data generation.
@@ -27,13 +27,13 @@ class DataGen {
 
     double getMinx() { mins[0] }
     void setMinx(double d) { mins[0] = d }
-    
+
     double getMiny() { mins[1] }
     void setMiny(double d) { mins[1] = d }
-    
+
     double getMaxx() { maxs[0] }
     void setMaxx(double d) { maxs[0] = d }
-    
+
     double getMaxy() { maxs[1] }
     void setMaxy(double d) { maxs[1] = d }
 
@@ -44,11 +44,11 @@ class DataGen {
       maxs = new double[2]
     }
   }
-  
+
   int y, m, d
   double c1, c2
   int nPoints, leap
-  
+
   private DataGen(int y, int m, int d, int nPoints, int leap) {
     this.y = pow(y, 0.63d) as int
     this.m = pow(d+m, 1.1d) as int
@@ -89,5 +89,5 @@ class DataGen {
   static Result generate(int y, int m, int d, int nPoints, int leap) {
     new DataGen(y, m, d, nPoints, leap).doGenerate()
   }
-  
+
 }
