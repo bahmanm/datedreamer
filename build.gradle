@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'org.slf4j:slf4j-api:2.0.12'
+  implementation 'org.slf4j:slf4j-api:2.0.13'
   implementation 'org.apache.groovy:groovy-all:4.0.21'
   implementation 'org.apache.commons:commons-math3:3.6.1'
   implementation 'com.github.yannrichet:JMathPlot:1.0.1'
